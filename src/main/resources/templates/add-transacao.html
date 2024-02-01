@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Adicionar Nova Transação</title>
+</head>
+<body>
+<h1>Adicionar Nova Transação</h1>
+
+<form th:action="@{/transactions/add}" th:object="${newTransaction}" method="post">
+  <button type="submit">Adicionar</button>
+</form>
+
+<a class="btn" href="home.html" onclick="submit">Voltar para Transações</a>
+
+</body>
+</html>

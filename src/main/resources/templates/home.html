@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gerenciador Financeiro - Transações</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+<header>
+    <h1>Transações Financeiras</h1>
+</header>
+
+<table class="transaction-table">
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Categoria</th>
+        <th>Descrição</th>
+        <th>Tipo</th>
+        <th>Valor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="transacao : ${transacoes}">
+        <td th:text="${#dates.format(transacao.date, 'dd/MM/yyyy')}"></td>
+        <td th:text="${transacao.categoria}"></td>
+        <td th:text="${transacao.descricao}"></td>
+        <td th:text="${transacao.tipo}"></td>
+        <td th:text="${transacao.valorTotal}"></td>
+    </tr>
+    </tbody>
+</table>
+<div class="add-transaction" >
+    <a class="btn"  onclick="submit" href="add-transacao.html" >Adicionar Nova Transação</a>
+</div>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+
+</html>
