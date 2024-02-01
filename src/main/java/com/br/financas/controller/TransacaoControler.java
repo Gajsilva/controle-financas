@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller()
 public class TransacaoControler {
     private final TransicaoService transicaoService;
 
@@ -19,9 +20,23 @@ public class TransacaoControler {
         this.transicaoService = transicaoService;
     }
 
-    @PostMapping(name = "/add-transacao")
-    public ResponseEntity<Transacao> addTransacao (@RequestBody Transacao transacao){
-        return ResponseEntity.ok(transicaoService.addTransacao(transacao));
+    @GetMapping("/home")
+    public ModelAndView home(){
+        ModelAndView mv = new ModelAndView("home");
+        mv.addObject("transacao",transacoes());
+        return mv;
+    }
+    @GetMapping("/add-transacao")
+    public ModelAndView addTransacaoView(){
+        ModelAndView mv = new ModelAndView("add-transacao");
+        mv.addObject("transacao", new Transacao());
+        return mv;
+    }
+
+    @PostMapping(value="/transacao/add", consumes = "application/x-www-form-urlencoded")
+    public ModelAndView addTransacao (@RequestBody Transacao transacao){
+        Transacao novaTransacao = transicaoService.addTransacao(transacao);
+        return new ModelAndView("redirect:/home");
     }
 
     @GetMapping("/transacoes")

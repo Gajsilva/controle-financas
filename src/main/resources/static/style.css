@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    font-size: 24px;
 }
 
 header {
@@ -11,29 +12,42 @@ header {
     padding: 10px;
 }
 
-.transaction-table {
+.transacao-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-.transaction-table th, .transaction-table td {
+.transacao-table th, .transacao-table td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px;
     text-align: left;
 }
 
-.transaction-table th {
+.transacao-table th {
     background-color: #4CAF50;
     color: white;
 }
 
-.footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
+
+.add-tran {
+    border: 1px solid #ddd;
     padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    margin-top: 20px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    text-align: center; /* Adicionei essa propriedade para garantir o texto centralizado */
 }
+
+.add-tran a.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px;
+    text-decoration: none;
+    display: inline-block; /* Alterei de block para inline-block */
+    border-radius: 5px;
+    font-size: 24px;
+    margin: 0 auto;
+}
+
+
