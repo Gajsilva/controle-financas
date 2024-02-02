@@ -15,7 +15,7 @@
     <h1>Transações Financeiras</h1>
 </header>
 
-<table class="transacao-table" border="1">
+<table class="transacao-table" >
     <thead>
     <tr>
         <th>Data</th>
@@ -26,19 +26,22 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="transacao : ${transacoes}">
-        <td th:text="${#dates.format(transacao.date, 'dd/MM/yyyy')}"></td>
+    <tr th:each="transaction : ${transacoes}">
+        <td th:text="${{transacao.date}}"></td>
         <td th:text="${transacao.categoria}"></td>
         <td th:text="${transacao.descricao}"></td>
         <td th:text="${transacao.tipo}"></td>
         <td th:text="${transacao.valorTotal}"></td>
+        <td>
+            <a th:href="@{'/edit/'+${transacao.id}}" >Editar</a>
+        </td>
     </tr>
     </tbody>
 </table>
 <div class="add-tran" >
     <a class="btn"  th:href="@{/add-transacao}" >Adicionar Nova Transação</a>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8Y+ua/Ci0TnN9f4DnxkU8Vq5U4xh+8x88l4Zl1kfbjAJFbRNI+aYoMIgx5tD" crossorigin="anonymous"></script>
 </body>
 
 </html>

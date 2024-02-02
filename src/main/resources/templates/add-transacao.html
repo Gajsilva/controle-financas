@@ -10,19 +10,18 @@
 <h1>Adicionar Nova Transação</h1>
 </header>
 <div class="add-transaction-form">
-<form th:action="@{/transacao/add}" th:object="${transacao}" method="post">
-  <label>Data:
-    <input type="date" th:field="*{date}" /></label><br/>
+<form action="home.html" th:action="@{/transacao/add}" th:object="${transacao}" method="POST">
+  <label>Data:<input type="date" th:field="*{date}" /></label><br/>
   <label>Categoria: <input type="text" th:field="*{categoria}" /></label><br/>
   <label>Descrição: <input type="text" th:field="*{descricao}" /></label><br/>
   <label>Tipo: <input type="text" th:field="*{tipo}" /></label><br/>
   <label>Valor: <input type="text" th:field="*{valorTotal}" /></label><br/>
   <button type="submit">Adicionar</button>
-
-  <div class="back-link">
-    <a class="btn" th:href="@{/home}" onclick="submit">Voltar para Transações</a>
-  </div>
 </form>
+  <div class="back-link">
+    <a class="btn" th:href="@{/home}" >Voltar para Transações</a>
+  </div>
+
 </div>
 </body>
 </html>

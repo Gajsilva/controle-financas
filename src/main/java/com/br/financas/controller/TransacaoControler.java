@@ -4,6 +4,7 @@ import com.br.financas.entity.Transacao;
 import com.br.financas.service.TransicaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@Controller()
+@Controller
+@Validated
 public class TransacaoControler {
     private final TransicaoService transicaoService;
 
@@ -23,7 +25,7 @@ public class TransacaoControler {
     @GetMapping("/home")
     public ModelAndView home(){
         ModelAndView mv = new ModelAndView("home");
-        mv.addObject("transacao",transacoes());
+        mv.addObject("transacao", transacoes());
         return mv;
     }
     @GetMapping("/add-transacao")
@@ -34,13 +36,13 @@ public class TransacaoControler {
     }
 
     @PostMapping(value="/transacao/add", consumes = "application/x-www-form-urlencoded")
-    public ModelAndView addTransacao (@RequestBody Transacao transacao){
-        Transacao novaTransacao = transicaoService.addTransacao(transacao);
-        return new ModelAndView("redirect:/home");
+    public String addTransacao ( Transacao transacao){
+        transicaoService.addTransacao(transacao);
+        return "redirect:/home";
     }
 
     @GetMapping("/transacoes")
-    public ResponseEntity<List<Transacao>> transacoes(){
-        return ResponseEntity.ok(transicaoService.getAllTransacao());
+    public List<Transacao> transacoes(){
+        return transicaoService.getAllTransacao();
     }
 }

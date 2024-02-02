@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-size: 24px;
+    font-size: 16px;
 }
 
 header {
@@ -13,7 +13,7 @@ header {
 }
 
 .transacao-table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -21,7 +21,7 @@ header {
 .transacao-table th, .transacao-table td {
     border: 1px solid #ddd;
     padding: 12px;
-    text-align: left;
+    text-align: center; /* Centralize o texto nas células da tabela */
 }
 
 .transacao-table th {
@@ -29,14 +29,13 @@ header {
     color: white;
 }
 
-
 .add-tran {
     border: 1px solid #ddd;
     padding: 10px;
     margin-top: 20px;
     box-sizing: border-box;
     border-radius: 5px;
-    text-align: center; /* Adicionei essa propriedade para garantir o texto centralizado */
+    text-align: center;
 }
 
 .add-tran a.btn {
@@ -44,10 +43,8 @@ header {
     color: white;
     padding: 14px;
     text-decoration: none;
-    display: inline-block; /* Alterei de block para inline-block */
+    display: inline-block;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 18px; /* Ajustei o tamanho da fonte para melhorar a proporção com o botão */
     margin: 0 auto;
 }
-
-
