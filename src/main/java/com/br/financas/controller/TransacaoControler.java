@@ -1,14 +1,10 @@
 package com.br.financas.controller;
 
 import com.br.financas.entity.Transacao;
-import com.br.financas.service.TransicaoService;
-import org.springframework.http.ResponseEntity;
+import com.br.financas.service.TransacaoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -16,16 +12,16 @@ import java.util.List;
 @Controller
 @Validated
 public class TransacaoControler {
-    private final TransicaoService transicaoService;
+    private final TransacaoService transacaoService;
 
-    public TransacaoControler(TransicaoService transicaoService) {
-        this.transicaoService = transicaoService;
+    public TransacaoControler(TransacaoService transacaoService) {
+        this.transacaoService = transacaoService;
     }
 
-    @GetMapping("/home")
+    @GetMapping("/index")
     public ModelAndView home(){
-        ModelAndView mv = new ModelAndView("home");
-        mv.addObject("transacao", transacoes());
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("transacoes", transacaoService.getAllTransacao());
         return mv;
     }
     @GetMapping("/add-transacao")
@@ -34,15 +30,30 @@ public class TransacaoControler {
         mv.addObject("transacao", new Transacao());
         return mv;
     }
+    @GetMapping("/editar/{id}")
+    public String editarTransacao(@PathVariable Long id, ModelAndView mv) {
+        Transacao transacao = transacaoService.obterTransacaoPorId(id);
+        mv.addObject("transacao", transacao);
+        return "redirect:/index";
+    }
+    @GetMapping("/excluir/{id}")
+    public String excluirTransacao(@PathVariable Long id) {
+        transacaoService.excluirTransacao(id);
+        return "redirect:/index";
+    }
+
+    @GetMapping("/pesquisar")
+    public ModelAndView pesquisarTransacoesPorDescricao(@RequestParam("descricao") String descricao) {
+        List<Transacao> transacoes = transacaoService.pesquisarPorDescricao(descricao);
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("transacoes", transacoes);
+        return modelAndView;
+    }
 
     @PostMapping(value="/transacao/add", consumes = "application/x-www-form-urlencoded")
     public String addTransacao ( Transacao transacao){
-        transicaoService.addTransacao(transacao);
-        return "redirect:/home";
+        transacaoService.addTransacao(transacao);
+        return "redirect:/index";
     }
 
-    @GetMapping("/transacoes")
-    public List<Transacao> transacoes(){
-        return transicaoService.getAllTransacao();
-    }
 }

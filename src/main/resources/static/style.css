@@ -12,8 +12,32 @@ header {
     padding: 10px;
 }
 
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+form label {
+    margin-right: 10px;
+}
+
+form input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .transacao-table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -21,7 +45,7 @@ header {
 .transacao-table th, .transacao-table td {
     border: 1px solid #ddd;
     padding: 12px;
-    text-align: center; /* Centralize o texto nas células da tabela */
+    text-align: center;
 }
 
 .transacao-table th {
@@ -45,6 +69,26 @@ header {
     text-decoration: none;
     display: inline-block;
     border-radius: 5px;
-    font-size: 18px; /* Ajustei o tamanho da fonte para melhorar a proporção com o botão */
+    font-size: 18px;
     margin: 0 auto;
 }
+
+
+ .editable {
+            cursor: pointer;
+        }
+
+        .editable:hover {
+            background-color: black;
+        }
+
+        .edit-input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .save-btn, .cancel-btn {
+            display: none;
+        }
+
+

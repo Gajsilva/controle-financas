@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gerenciador Financeiro - Transações</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <link rel="stylesheet" th:href="@{/style.css}" />
+
+</head>
+
+<body>
+<header>
+    <h1>Transações Financeiras</h1>
+</header>
+<form th:action="@{/pesquisar}" method="get">
+    <label for="descricao">Pesquisar por Descrição:</label>
+    <input type="text" id="descricao" name="descricao" />
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
+
+<table class="transacao-table">
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Categoria</th>
+        <th>Descrição</th>
+        <th>Tipo</th>
+        <th>Valor</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody th:if="${not #lists.isEmpty(transacoes)}">
+    <tr th:each="transacao : ${transacoes}">
+        <td class="editable" th:text="${#dates.format(transacao.date, 'dd/MM/yyyy')}" onclick="makeEditable(this)"></td>
+        <td class="editable" th:text="${transacao.categoria}" onclick="makeEditable(this)"></td>
+        <td class="editable" th:text="${transacao.descricao}" onclick="makeEditable(this)"></td>
+        <td class="editable" th:text="${transacao.tipo}" onclick="makeEditable(this)"></td>
+        <td class="editable" th:text="${transacao.valorTotal}" onclick="makeEditable(this)"></td>
+        <td>
+            <button class="btn btn-primary" onclick="saveChanges(this)">Editar</button>
+        </td>
+        <td>
+            <a class="btn btn-danger" th:href="@{'/excluir/' + ${transacao.id}}">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+    <tbody th:if="${#lists.isEmpty(transacoes)}">
+    <tr>
+        <td colspan="7">Nenhuma transação encontrada.</td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="add-tran">
+    <a class="btn" th:href="@{/add-transacao}">Adicionar Nova Transação</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8Y+ua/Ci0TnN9f4DnxkU8Vq5U4xh+8x88l4Zl1kfbjAJFbRNI+aYoMIgx5tD" crossorigin="anonymous"></script>
+
+<script>
+        function makeEditable(cell) {
+            // Verifica se já está em modo de edição
+            var isEditable = cell.getAttribute('data-editable') === 'true';
+
+            if (!isEditable) {
+                // Alterna para modo de edição
+                cell.setAttribute('data-editable', 'true');
+                cell.classList.add('bg-warning');
+
+                // Esconde o conteúdo atual
+                var content = cell.innerText;
+                cell.innerHTML = '';
+
+                // Cria um campo de entrada para edição
+                var input = document.createElement("input");
+                input.type = "text";
+                input.value = content;
+                input.className = "edit-input";
+
+                // Adiciona o campo de entrada à célula
+                cell.appendChild(input);
+
+                // Exibe os botões apropriados
+                cell.nextElementSibling.querySelector('.save-btn').style.display = 'inline-block';
+                cell.nextElementSibling.querySelector('.cancel-btn').style.display = 'inline-block';
+            }
+        }
+
+        function saveChanges(button) {
+            // Obtém a linha da tabela
+            var row = button.closest("tr");
+
+            // Itera sobre as células e atualiza os dados
+            var cells = row.getElementsByTagName("td");
+            for (var i = 0; i < cells.length - 2; i++) {
+                var input = cells[i].getElementsByTagName("input")[0];
+                cells[i].innerText = input.value;
+            }
+
+            // Restaura o estilo original e oculta os botões
+            row.querySelector('.editable').setAttribute('data-editable', 'false');
+            row.querySelector('.editable').classList.remove('bg-warning');
+            row.querySelector('.save-btn').style.display = 'none';
+            row.querySelector('.cancel-btn').style.display = 'none';
+        }
+
+        function cancelEdit(button) {
+            // Obtém a linha da tabela
+            var row = button.closest("tr");
+
+            // Restaura o estilo original e oculta os botões
+            row.querySelector('.editable').setAttribute('data-editable', 'false');
+            row.querySelector('.editable').classList.remove('bg-warning');
+            row.querySelector('.save-btn').style.display = 'none';
+            row.querySelector('.cancel-btn').style.display = 'none';
+
+            // Restaura os valores originais
+            var cells = row.getElementsByTagName("td");
+            for (var i = 0; i < cells.length - 2; i++) {
+                var input = cells[i].getElementsByTagName("input")[0];
+                cells[i].innerText = input.defaultValue;
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>
