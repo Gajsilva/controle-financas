@@ -1,94 +1,71 @@
+/* style.css */
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Cor de fundo do corpo */
 }
 
 header {
-    background-color: #333;
-    color: white;
+    background-color: #24ad44; /* Cor de fundo do cabeçalho */
+    color: #fff; /* Cor do texto do cabeçalho */
+    padding: 20px;
     text-align: center;
-    padding: 10px;
 }
 
 form {
-    margin-top: 20px;
-    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
 }
 
-form label {
+label {
     margin-right: 10px;
+    font-weight: bold;
 }
 
-form input[type="text"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.btn-geral {
+    background-color: #28a745; /* Verde escuro */
+    color: #fff; /* Cor do texto do botão */
 }
 
-form button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.btn-geral:hover {
+    background-color: #1f7031; /* Verde um pouco mais escuro ao passar o mouse */
+    color: #fff;
+}
+
+.btn-excluir {
+    background-color: #dc3545; /* Vermelho escuro para botão de exclusão */
+    color: #fff; /* Cor do texto do botão de exclusão */
+}
+
+.btn-excluir:hover {
+    background-color: #c82333 !important; /* Adiciona !important para garantir prioridade na cor ao passar o mouse */
+ color: #fff !important;
 }
 
 .transacao-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .transacao-table th, .transacao-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
+    border: 1px solid #c1c7c2;
+    text-align: left;
+    vertical-align: middle; /* Adiciona alinhamento vertical ao conteúdo da célula */
 }
 
-.transacao-table th {
-    background-color: #4CAF50;
-    color: white;
-}
+
 
 .add-tran {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-top: 20px;
-    box-sizing: border-box;
-    border-radius: 5px;
     text-align: center;
 }
 
-.add-tran a.btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 5px;
-    font-size: 18px;
-    margin: 0 auto;
+.add-tran a {
+    background-color:  #28a745;
+    color: #fff;
 }
 
-
- .editable {
-            cursor: pointer;
-        }
-
-        .editable:hover {
-            background-color: black;
-        }
-
-        .edit-input {
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .save-btn, .cancel-btn {
-            display: none;
-        }
-
-
+.add-tran a:hover {
+    background-color: #1f7031; /* Azul turquesa mais escuro ao passar o mouse */
+    color:#fff;
+}

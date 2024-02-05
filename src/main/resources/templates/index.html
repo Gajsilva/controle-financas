@@ -5,22 +5,40 @@
     <meta charset="UTF-8"/>
     <title>Gerenciador Financeiro - Transações</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
     <link rel="stylesheet" th:href="@{/style.css}" />
-
 </head>
 
 <body>
 <header>
     <h1>Transações Financeiras</h1>
 </header>
+
+<!-- Pesquisar por Descrição -->
 <form th:action="@{/pesquisar}" method="get">
     <label for="descricao">Pesquisar por Descrição:</label>
     <input type="text" id="descricao" name="descricao" />
-    <button type="submit" class="btn btn-primary">Pesquisar</button>
+    <button type="submit" class="btn btn-geral">Pesquisar</button>
 </form>
 
+<!-- Pesquisar por Data -->
+<form th:action="@{/pesquisarPorData}" method="get">
+    <label for="dataInicio">Data de Início:</label>
+    <input type="date" id="dataInicio" name="dataInicio" />
+    <label for="dataFim">Data de Fim:</label>
+    <input type="date" id="dataFim" name="dataFim" />
+    <button type="submit" class="btn btn-geral">Pesquisar por Data</button>
+</form>
 
+<!-- Filtrar por Valor -->
+<form th:action="@{/filtrarPorValor}" method="get">
+    <label for="precoMin">Preço Mínimo:</label>
+    <input type="number" id="precoMin" name="precoMin" />
+    <label for="precoMax">Preço Máximo:</label>
+    <input type="number" id="precoMax" name="precoMax" />
+    <button type="submit" class="btn btn-geral">Filtrar por Valor</button>
+</form>
+
+<!-- Tabela de Transações -->
 <table class="transacao-table">
     <thead>
     <tr>
@@ -29,105 +47,106 @@
         <th>Descrição</th>
         <th>Tipo</th>
         <th>Valor</th>
-        <th></th>
-        <th></th>
+        <th>Ações</th>
     </tr>
     </thead>
     <tbody th:if="${not #lists.isEmpty(transacoes)}">
-    <tr th:each="transacao : ${transacoes}">
+    <tr th:each="transacao : ${transacoes}" th:object="${transacao}">
         <td class="editable" th:text="${#dates.format(transacao.date, 'dd/MM/yyyy')}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.categoria}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.descricao}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.tipo}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.valorTotal}" onclick="makeEditable(this)"></td>
         <td>
-            <button class="btn btn-primary" onclick="saveChanges(this)">Editar</button>
-        </td>
-        <td>
-            <a class="btn btn-danger" th:href="@{'/excluir/' + ${transacao.id}}">Excluir</a>
+            <button class="btn btn-geral btn-editar" onclick="editRow(this, ${transacao.id})">Editar</button>
+            <a id="btnSalvar" class="btn btn-geral btn-salvar" style="display:none;" th:attr="data-id=${transacao.id}" methods="PUT">Salvar</a>
+            <a class="btn btn-excluir btn-exc" th:href="@{'/excluir/' + ${transacao.id}}">Excluir</a>
+            <button class="btn btn-excluir btn-cancelar" style="display:none;">Cancelar</button>
         </td>
     </tr>
     </tbody>
     <tbody th:if="${#lists.isEmpty(transacoes)}">
     <tr>
-        <td colspan="7">Nenhuma transação encontrada.</td>
+        <td colspan="6">Nenhuma transação encontrada.</td>
     </tr>
     </tbody>
 </table>
 
+<!-- Adicionar Nova Transação -->
 <div class="add-tran">
     <a class="btn" th:href="@{/add-transacao}">Adicionar Nova Transação</a>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8Y+ua/Ci0TnN9f4DnxkU8Vq5U4xh+8x88l4Zl1kfbjAJFbRNI+aYoMIgx5tD" crossorigin="anonymous"></script>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-        function makeEditable(cell) {
-            // Verifica se já está em modo de edição
-            var isEditable = cell.getAttribute('data-editable') === 'true';
+        $(document).ready(function () {
+            $(".btn-editar").click(function () {
+                var row = $(this).closest("tr");
+                editarRow(row);
+            });
 
-            if (!isEditable) {
-                // Alterna para modo de edição
-                cell.setAttribute('data-editable', 'true');
-                cell.classList.add('bg-warning');
+            $(".btn-cancelar").click(function () {
+                var row = $(this).closest("tr");
+                cancelarEdicao(row);
+            });
 
-                // Esconde o conteúdo atual
-                var content = cell.innerText;
-                cell.innerHTML = '';
+            $("#btnSalvar").click(function () {
+                var id = $(this).data("id");
+                salvarEdicao(id);
+            });
 
-                // Cria um campo de entrada para edição
-                var input = document.createElement("input");
-                input.type = "text";
-                input.value = content;
-                input.className = "edit-input";
-
-                // Adiciona o campo de entrada à célula
-                cell.appendChild(input);
-
-                // Exibe os botões apropriados
-                cell.nextElementSibling.querySelector('.save-btn').style.display = 'inline-block';
-                cell.nextElementSibling.querySelector('.cancel-btn').style.display = 'inline-block';
-            }
-        }
-
-        function saveChanges(button) {
-            // Obtém a linha da tabela
-            var row = button.closest("tr");
-
-            // Itera sobre as células e atualiza os dados
-            var cells = row.getElementsByTagName("td");
-            for (var i = 0; i < cells.length - 2; i++) {
-                var input = cells[i].getElementsByTagName("input")[0];
-                cells[i].innerText = input.value;
+            function editarRow(row) {
+                row.find(".editable").prop("contenteditable", true);
+                row.find("#btnSalvar, .btn-cancelar").show();
+                row.find(".btn-editar, .btn-exc").hide();
             }
 
-            // Restaura o estilo original e oculta os botões
-            row.querySelector('.editable').setAttribute('data-editable', 'false');
-            row.querySelector('.editable').classList.remove('bg-warning');
-            row.querySelector('.save-btn').style.display = 'none';
-            row.querySelector('.cancel-btn').style.display = 'none';
-        }
-
-        function cancelEdit(button) {
-            // Obtém a linha da tabela
-            var row = button.closest("tr");
-
-            // Restaura o estilo original e oculta os botões
-            row.querySelector('.editable').setAttribute('data-editable', 'false');
-            row.querySelector('.editable').classList.remove('bg-warning');
-            row.querySelector('.save-btn').style.display = 'none';
-            row.querySelector('.cancel-btn').style.display = 'none';
-
-            // Restaura os valores originais
-            var cells = row.getElementsByTagName("td");
-            for (var i = 0; i < cells.length - 2; i++) {
-                var input = cells[i].getElementsByTagName("input")[0];
-                cells[i].innerText = input.defaultValue;
+            function cancelarEdicao(row) {
+                row.find(".editable").prop("contenteditable", false);
+                row.find("#btnSalvar, .btn-cancelar").hide();
+                row.find(".btn-editar, .btn-exc").show();
             }
-        }
+
+            function salvarEdicao(id) {
+                var row = $("tr[data-id='" + id + "']");
+                var formData = {
+                    id: id,
+                    data: row.find(".editable[data-id='" + id + "']").text(),
+                    categoria: row.find(".editable[data-id='" + id + "']").text(),
+                    descricao: row.find(".editable[data-id='" + id + "']").text(),
+                    tipo: row.find(".editable[data-id='" + id + "']").text(),
+                    valorTotal: row.find(".editable[data-id='" + id + "']").text().replace(/[^0-9.]/g, '')
+                };
+
+                var url = "/financas/editar-transacao/" + id;
+
+                $.ajax({
+                    type: "POST", // Usar POST
+                    url: url,
+                    data: {
+                        _method: 'post',
+                        id: formData.id,
+                        data: formData.data,
+                        categoria: formData.categoria,
+                        descricao: formData.descricao,
+                        tipo: formData.tipo,
+                        valorTotal: formData.valorTotal
+                    },
+                    success: function () {
+                        console.log("Dados salvos com sucesso!");
+                        window.location.href = '/financas/index';
+                        cancelarEdicao(row);
+                    },
+                    error: function (error) {
+                        console.error("Erro ao salvar dados: " + error.responseText);
+                        cancelarEdicao(row);
+                    }
+                });
+            }
+        });
     </script>
-
-
 </body>
-
 </html>

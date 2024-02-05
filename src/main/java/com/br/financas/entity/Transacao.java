@@ -1,9 +1,7 @@
 package com.br.financas.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -15,6 +13,7 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
     private Date date;
     private String categoria;
     private String descricao;
@@ -28,7 +27,7 @@ public class Transacao {
     public void setId(Long id) {
         this.id = id;
     }
-
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public Date getDate() {
         return date;
     }
