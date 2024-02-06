@@ -1,0 +1,104 @@
+/* style.css */
+
+body {
+    font-family: 'Arial', sans-serif; /* Define a família de fontes para Arial ou fontes sans-serif */
+    background-color: #f8f9fa; /* Cor de fundo do corpo em tom de cinza claro */
+    margin: 0; /* Remove a margem padrão do corpo */
+}
+
+header {
+    background-color: #4CAF50; /* Cor de fundo verde para o cabeçalho */
+    color: #fff; /* Cor do texto no cabeçalho em branco */
+    padding: 20px; /* Preenchimento interno de 20 pixels no cabeçalho */
+    text-align: center; /* Alinhamento do texto no centro */
+}
+
+form {
+    margin-top: 20px; /* Margem superior do formulário de 20 pixels */
+    margin-bottom: 30px; /* Margem inferior do formulário de 30 pixels */
+}
+
+label {
+    margin-right: 10px; /* Margem direita de 10 pixels para rótulos */
+    font-weight: bold; /* Define o peso da fonte como negrito para os rótulos */
+}
+
+/* Ajustes para inputs */
+form input {
+    padding: 8px; /* Adiciona um preenchimento interno de 8 pixels aos campos de entrada */
+    border: 1px solid #86bb71; /* Adiciona uma borda sólida de 1 pixel com cor verde (#86bb71) aos campos de entrada */
+    border-radius: 4px; /* Adiciona bordas arredondadas de 4 pixels aos campos de entrada */
+    margin-bottom: 5px; /* Margem inferior de 5 pixels para os campos de entrada */
+    width: 200px; /* Define a largura dos campos de entrada como 200 pixels */
+}
+
+/* Ajustes para os botões */
+.btn-geral,
+.btn-excluir,
+.add-tran a {
+    display: inline-block; /* Define os botões como elementos em linha */
+    margin-bottom: 6px; /* Margem inferior de 6 pixels para os botões */
+    text-decoration: none; /* Remove a decoração de texto padrão, como sublinhado */
+    border-radius: 4px; /* Adiciona bordas arredondadas de 4 pixels aos botões */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Adiciona transição suave de cores ao passar o mouse sobre os botões */
+    padding: 6px 18px; /* Adiciona preenchimento interno de 6 pixels na vertical e 18 pixels na horizontal aos botões */
+    font-size: 14px; /* Define o tamanho da fonte dos botões como 14 pixels */
+}
+
+.btn-geral {
+    background-color: #4CAF50; /* Cor de fundo verde para o botão geral */
+    color: #fff; /* Cor do texto no botão geral */
+}
+
+.btn-geral:hover {
+    background-color: #45a045; /* Cor de fundo ao passar o mouse sobre o botão geral */
+}
+
+.btn-excluir {
+    background-color: #dc3545; /* Cor de fundo vermelha para o botão de exclusão */
+    color: #fff; /* Cor do texto no botão de exclusão */
+}
+
+.btn-excluir:hover {
+    background-color: #c82333 !important; /* Cor de fundo ao passar o mouse sobre o botão de exclusão, com !important para priorizar sobreposição */
+}
+
+.transacao-table {
+    width: 100%; /* Largura total para a tabela de transações */
+    border-collapse: collapse; /* Colapso das bordas da tabela */
+    margin-bottom: 30px; /* Margem inferior da tabela de transações de 30 pixels */
+}
+
+.transacao-table th,
+.transacao-table td {
+    border: 1px solid #86bb71; /* Adiciona uma borda sólida de 1 pixel com cor verde (#86bb71) às células da tabela */
+    padding: 6px; /* Adiciona preenchimento interno de 6 pixels às células da tabela */
+    text-align: left; /* Alinhamento do texto à esquerda nas células da tabela */
+    vertical-align: middle; /* Alinhamento vertical centralizado nas células da tabela */
+}
+
+.transacao-table th {
+    background-color: #4CAF50; /* Cor de fundo verde para o cabeçalho da tabela */
+    color: #fff; /* Cor do texto no cabeçalho da tabela */
+}
+
+.transacao-table tbody tr:nth-child(even) {
+    background-color: #e6f4e0; /* Cor de fundo alternada em tom de verde claro para linhas pares da tabela */
+}
+
+.transacao-table tbody tr:hover {
+    background-color: #d9edc2; /* Cor de fundo ao passar o mouse sobre as linhas da tabela em tom de verde mais escuro */
+}
+
+.add-tran {
+    text-align: center; /* Alinhamento centralizado do texto */
+}
+
+.add-tran a {
+    background-color: #45a045; /* Cor de fundo verde para o botão de adicionar transação */
+    color: #fff; /* Cor do texto no botão de adicionar transação */
+}
+
+.add-tran a:hover {
+    background-color: #45a045; /* Cor de fundo ao passar o mouse sobre o botão de adicionar transação */
+}

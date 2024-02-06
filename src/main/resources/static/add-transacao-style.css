@@ -1,3 +1,5 @@
+/* add-style.css */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,14 +8,14 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #4CAF50;
     color: white;
     text-align: center;
     padding: 15px;
 }
 
 .add-transaction-form {
-    max-width: 300px;
+    max-width: 400px;
     margin: 20px auto;
     max-height: 80%;
 }
@@ -21,9 +23,9 @@ header {
 form {
     max-height: 80%;
     margin-top: 20px;
-    max-width: 350px;
+    max-width: 400px;
     margin: 0 auto;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -37,23 +39,29 @@ form label {
 form input {
     width: 100%;
     padding: 10px;
-
     box-sizing: border-box;
-    border: 1px solid black;
+    border: 1px solid #86bb71;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 form button {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
+    padding: 12px;
     text-decoration: none;
     display: block;
     margin: 0 auto;
     border: none;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 18px;
+}
+
+/* Efeito hover para o botão de adicionar */
+form button:hover {
+    cursor: pointer;
+    background-color: #45a045;
+    color: #fff;
 }
 
 .back-link {
@@ -68,5 +76,8 @@ form button {
     text-decoration: none;
     display: inline-block;
     border-radius: 5px;
-
+}
+.back-link a.btn:hover {
+    background-color: #555; /* Cor de fundo ao passar o mouse sobre o link de volta (efeito hover) */
+    color: #fff; /* Cor do texto no link de volta ao passar o mouse sobre (efeito hover) */
 }

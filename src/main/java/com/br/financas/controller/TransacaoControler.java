@@ -34,30 +34,26 @@ public class TransacaoControler {
         return mv;
     }
 
-    @PostMapping(value = "/editar-transacao/{id}")
-    public ModelAndView editarEAtualizarTransacao(@PathVariable Long id, Transacao transacao) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        // Adicione a lógica para verificar valores não nulos aqui
-        // Certifique-se de validar e tratar valores nulos conforme necessário
-
-        transacaoService.atualizar(id, transacao);
-
-        modelAndView.setViewName("redirect:/index"); // Redireciona para a página desejada após a atualização
-        return modelAndView;
+    @PostMapping("/editar-transacao/{id}")
+    public String editarEAtualizarTransacao(@PathVariable Long id, @RequestBody  Transacao transacao) {
+       transacaoService.atualizar(id, transacao);
+        return "redirect:/index";
     }
 
 
-
-    @GetMapping("/transacao/{id}")
-    public Transacao obterTransacaoPorId(@PathVariable Long id) {
-       return transacaoService.findBy(id);
-    }
     @GetMapping("/excluir/{id}")
     public String excluirTransacao(@PathVariable Long id) {
         transacaoService.excluirTransacao(id);
         return "redirect:/index";
     }
+
+    @PostMapping("/transacao/add")
+    public String addTransacao ( @ModelAttribute Transacao transacao){
+        transacaoService.addTransacao(transacao);
+        return "redirect:/index";
+    }
+
+
 
     @GetMapping("/pesquisar")
     public ModelAndView pesquisarTransacoesPorDescricao(@RequestParam("descricao") String descricao) {
@@ -67,11 +63,6 @@ public class TransacaoControler {
         return modelAndView;
     }
 
-    @PostMapping(value="/transacao/add", consumes = "application/x-www-form-urlencoded")
-    public String addTransacao ( Transacao transacao){
-        transacaoService.addTransacao(transacao);
-        return "redirect:/index";
-    }
     @GetMapping("/pesquisarPorData")
     public ModelAndView pesquisarTransacoesPorData(
             @RequestParam("dataInicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataInicio,

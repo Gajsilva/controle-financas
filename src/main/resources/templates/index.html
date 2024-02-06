@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <title>Gerenciador Financeiro - Transações</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <link rel="stylesheet" th:href="@{/estilo.css}" />
 </head>
 
 <body>
@@ -38,7 +38,7 @@
     <button type="submit" class="btn btn-geral">Filtrar por Valor</button>
 </form>
 
-<!-- Tabela de Transações -->
+
 <table class="transacao-table">
     <thead>
     <tr>
@@ -51,18 +51,29 @@
     </tr>
     </thead>
     <tbody th:if="${not #lists.isEmpty(transacoes)}">
-    <tr th:each="transacao : ${transacoes}" th:object="${transacao}">
+    <tr th:each="transacao : ${transacoes}" th:object="${transacao}"  th:data-id="${transacao.id}">
         <td class="editable" th:text="${#dates.format(transacao.date, 'dd/MM/yyyy')}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.categoria}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.descricao}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.tipo}" onclick="makeEditable(this)"></td>
         <td class="editable" th:text="${transacao.valorTotal}" onclick="makeEditable(this)"></td>
         <td>
+
             <button class="btn btn-geral btn-editar" onclick="editRow(this, ${transacao.id})">Editar</button>
-            <a id="btnSalvar" class="btn btn-geral btn-salvar" style="display:none;" th:attr="data-id=${transacao.id}" methods="PUT">Salvar</a>
+
+
+            <button class="btn btn-geral btn-salvar" style="display:none;" type="submit" formaction="@{/editar-transacao/{id}}">
+                Salvar
+            </button>
+
+
+
             <a class="btn btn-excluir btn-exc" th:href="@{'/excluir/' + ${transacao.id}}">Excluir</a>
+
+
             <button class="btn btn-excluir btn-cancelar" style="display:none;">Cancelar</button>
         </td>
+
     </tr>
     </tbody>
     <tbody th:if="${#lists.isEmpty(transacoes)}">
@@ -81,72 +92,109 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- ... (código anterior) ... -->
+
 <script>
-        $(document).ready(function () {
-            $(".btn-editar").click(function () {
-                var row = $(this).closest("tr");
-                editarRow(row);
-            });
+    $(document).ready(function () {
+        var modoEdicaoAtivo = false;  // Variável de controle
 
-            $(".btn-cancelar").click(function () {
-                var row = $(this).closest("tr");
-                cancelarEdicao(row);
-            });
-
-            $("#btnSalvar").click(function () {
-                var id = $(this).data("id");
-                salvarEdicao(id);
-            });
-
-            function editarRow(row) {
-                row.find(".editable").prop("contenteditable", true);
-                row.find("#btnSalvar, .btn-cancelar").show();
-                row.find(".btn-editar, .btn-exc").hide();
+        // Função para tornar o elemento editável apenas se o modo de edição estiver ativo
+        function makeEditable(element) {
+            if (modoEdicaoAtivo) {
+                $(element).prop("contenteditable", true);
             }
+        }
 
-            function cancelarEdicao(row) {
-                row.find(".editable").prop("contenteditable", false);
-                row.find("#btnSalvar, .btn-cancelar").hide();
-                row.find(".btn-editar, .btn-exc").show();
-            }
-
-            function salvarEdicao(id) {
-                var row = $("tr[data-id='" + id + "']");
-                var formData = {
-                    id: id,
-                    data: row.find(".editable[data-id='" + id + "']").text(),
-                    categoria: row.find(".editable[data-id='" + id + "']").text(),
-                    descricao: row.find(".editable[data-id='" + id + "']").text(),
-                    tipo: row.find(".editable[data-id='" + id + "']").text(),
-                    valorTotal: row.find(".editable[data-id='" + id + "']").text().replace(/[^0-9.]/g, '')
-                };
-
-                var url = "/financas/editar-transacao/" + id;
-
-                $.ajax({
-                    type: "POST", // Usar POST
-                    url: url,
-                    data: {
-                        _method: 'post',
-                        id: formData.id,
-                        data: formData.data,
-                        categoria: formData.categoria,
-                        descricao: formData.descricao,
-                        tipo: formData.tipo,
-                        valorTotal: formData.valorTotal
-                    },
-                    success: function () {
-                        console.log("Dados salvos com sucesso!");
-                        window.location.href = '/financas/index';
-                        cancelarEdicao(row);
-                    },
-                    error: function (error) {
-                        console.error("Erro ao salvar dados: " + error.responseText);
-                        cancelarEdicao(row);
-                    }
-                });
+        // Adiciona evento de duplo clique nas células quando o modo de edição está ativo
+        $("table.transacao-table").on("dblclick", "td.editable", function () {
+            if (modoEdicaoAtivo) {
+                makeEditable(this);
             }
         });
-    </script>
+
+        $(".btn-editar").click(function () {
+            if (!modoEdicaoAtivo) {  // Verifica se o modo de edição não está ativo
+                var row = $(this).closest("tr");
+                row.find(".editable").each(function () {
+                    makeEditable(this);
+                });
+                row.find(".btn-salvar, .btn-cancelar").show();
+                row.find(".btn-editar, .btn-exc").hide();
+
+                modoEdicaoAtivo = true;  // Ativa o modo de edição
+            }
+        });
+
+        $(".btn-cancelar").click(function () {
+            var row = $(this).closest("tr");
+            row.find(".editable").prop("contenteditable", false);
+            row.find(".btn-salvar, .btn-cancelar").hide();
+            row.find(".btn-editar, .btn-exc").show();
+
+            modoEdicaoAtivo = false;  // Desativa o modo de edição
+        });
+
+        $(".btn-salvar").click(function () {
+            var row = $(this).closest("tr");
+            var id = row.data("id");
+
+            // Verifica se o ID está definido e o modo de edição está ativo
+            if (typeof id !== 'undefined' && modoEdicaoAtivo) {
+                row.find(".editable").prop("contenteditable", false);
+                row.find(".btn-salvar, .btn-cancelar").hide();
+                row.find(".btn-editar, .btn-exc").show();
+
+                // Extrai os dados da linha
+                var date = row.find(".editable:eq(0)").text();
+                var categoria = row.find(".editable:eq(1)").text();
+                var descricao = row.find(".editable:eq(2)").text();
+                var tipo = row.find(".editable:eq(3)").text();
+                var valorTotal = row.find(".editable:eq(4)").text();
+
+                // Formata a data para o formato aceito pelo backend
+                var formattedDate = formatDate(date);
+
+                // Envia os dados para o servidor usando AJAX (requer jQuery)
+                $.ajax({
+                    url: '/financas/editar-transacao/' + id,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: id,
+                        date: formattedDate,
+                        categoria: categoria,
+                        descricao: descricao,
+                        tipo: tipo,
+                        valorTotal: valorTotal
+                    }),
+                    success: function (data) {
+                        // Lógica de sucesso, se necessário
+                    },
+                    error: function (error) {
+                        // Lógica de erro, se necessário
+                    }
+                });
+
+                modoEdicaoAtivo = false;  // Desativa o modo de edição após salvar
+            } else {
+                console.error("ID da transação não está definido ou modo de edição não está ativo");
+            }
+        });
+
+        // Função para formatar a data
+        function formatDate(dateString) {
+            var parts = dateString.split('/');
+            // O formato aqui é 'YYYY-MM-DD', ajuste conforme necessário
+            return parts[2] + '-' + parts[1] + '-' + parts[0];
+        }
+    });
+</script>
+
+<!-- ... (código posterior) ... -->
+
+
+
+
+
 </body>
 </html>

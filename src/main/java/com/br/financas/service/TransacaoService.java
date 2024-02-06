@@ -81,17 +81,19 @@ public class TransacaoService {
 
 
     public void atualizar(Long id, Transacao transacaoAtualizada) {
-        // Verifica se a transação com o ID fornecido existe no banco de dados
+
         Optional<Transacao> transacaoOptional = transacaoRepository.findById(id);
 
         if (transacaoOptional.isPresent()) {
-            // Transação encontrada, atualiza os atributos
+
             Transacao transacao = transacaoOptional.get();
 
-            // Adicione a lógica para verificar e atualizar os atributos conforme necessário
+
             if (transacaoAtualizada.getCategoria() != null) {
                 transacao.setCategoria(transacaoAtualizada.getCategoria());
+
             }
+
 
             if (transacaoAtualizada.getDescricao() != null) {
                 transacao.setDescricao(transacaoAtualizada.getDescricao());
@@ -101,11 +103,11 @@ public class TransacaoService {
                 transacao.setTipo(transacaoAtualizada.getTipo());
             }
 
-            // Salva a transação atualizada no banco de dados
             transacaoRepository.save(transacao);
         } else {
-            // Transação não encontrada, você pode lidar com isso conforme necessário (lançar uma exceção, por exemplo)
+            System.out.println("Erro");
         }
+
     }
 
 
