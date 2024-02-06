@@ -9,10 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +22,10 @@ public class TransacaoService {
 
     public List<Transacao> getAllTransacao() {
         List<Transacao> transacaos = transacaoRepository.findAll();
-        return transacaos.stream().toList();
+
+        return transacaos.stream()
+                .sorted(Comparator.comparing(Transacao::getDate).reversed())
+                .collect(Collectors.toList());
     }
 
     public Transacao findBy(Long id) {
