@@ -2,11 +2,14 @@ package com.br.financas.controller;
 
 import com.br.financas.entity.Transacao;
 import com.br.financas.service.TransacaoService;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -48,11 +51,10 @@ public class TransacaoControler {
     }
 
     @PostMapping("/transacao/add")
-    public String addTransacao ( @ModelAttribute Transacao transacao){
+    public String addTransacao(@ModelAttribute  Transacao transacao) {
         transacaoService.addTransacao(transacao);
         return "redirect:/index";
     }
-
 
 
     @GetMapping("/pesquisar")
@@ -80,8 +82,11 @@ public class TransacaoControler {
             @RequestParam("precoMax") BigDecimal precoMax) {
 
         List<Transacao> transacoes = transacaoService.filtrarPorValor(precoMin, precoMax);
+
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("transacoes", transacoes);
         return modelAndView;
     }
+
+
 }

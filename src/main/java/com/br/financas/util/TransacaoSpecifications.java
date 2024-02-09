@@ -9,11 +9,20 @@ public class TransacaoSpecifications {
 
     public static Specification<Transacao> precoMaiorOuIgual(BigDecimal valorMin) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get("valor"), valorMin);
+                criteriaBuilder.greaterThanOrEqualTo(root.get("valorTotal"), valorMin);
     }
 
     public static Specification<Transacao> precoMenorOuIgual(BigDecimal valorMax) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.lessThanOrEqualTo(root.get("preco"), valorMax);
+                criteriaBuilder.lessThanOrEqualTo(root.get("valorTotal"), valorMax);
+    }
+
+    public static Specification<Transacao> descricaoContemIgnoreCase(String descricao) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("descricao")),
+                        "%" + descricao.toLowerCase() + "%"
+                );
     }
 }
+

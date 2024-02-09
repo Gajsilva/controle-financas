@@ -10,6 +10,15 @@
 <h1>Adicionar Nova Transação</h1>
 </header>
 <div class="add-transaction-form">
+
+  <div th:if="${mensagemSucesso}" class="alert alert-success" role="alert">
+    <p th:text="${mensagemSucesso}"></p>
+  </div>
+  <div th:if="${mensagemErro}" class="alert alert-danger" role="alert">
+    <p th:text="${mensagemErro}"></p>
+  </div>
+
+
 <form action="index.html" th:action="@{/transacao/add}" th:object="${transacao}" method="POST">
   <label>Data:<input type="date" th:field="*{date}" /></label><br/>
   <label>Categoria: <input type="text" th:field="*{categoria}" /></label><br/>
