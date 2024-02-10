@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
 <head>
   <meta charset="UTF-8"/>
   <title>Adicionar Nova Transação</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
   <link rel="stylesheet" th:href="@{/add-transacao-style.css}" />
 </head>
 <body>
@@ -11,15 +14,8 @@
 </header>
 <div class="add-transaction-form">
 
-  <div th:if="${mensagemSucesso}" class="alert alert-success" role="alert">
-    <p th:text="${mensagemSucesso}"></p>
-  </div>
-  <div th:if="${mensagemErro}" class="alert alert-danger" role="alert">
-    <p th:text="${mensagemErro}"></p>
-  </div>
 
-
-<form action="index.html" th:action="@{/transacao/add}" th:object="${transacao}" method="POST">
+<form action="index.html" th:action="@{/transacao/add}" th:object="${transacao}" method="POST" onsubmit="return validarFormulario()">
   <label>Data:<input type="date" th:field="*{date}" /></label><br/>
   <label>Categoria: <input type="text" th:field="*{categoria}" /></label><br/>
   <label>Descrição: <input type="text" th:field="*{descricao}" /></label><br/>
@@ -32,5 +28,27 @@
   </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function validarFormulario() {
+        var date = document.querySelector('input[type="date"]').value;
+        var categoria = document.querySelector('input[name="categoria"]').value;
+        var descricao = document.querySelector('input[name="descricao"]').value;
+        var tipo = document.querySelector('input[name="tipo"]').value;
+        var valorTotal = document.querySelector('input[name="valorTotal"]').value;
+
+        if (!date || !categoria || !descricao || !tipo || !valorTotal) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Não Pode Deixar Em Branco !',
+                text: 'Por favor, preencha todos os campos!',
+            });
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
 </body>
 </html>

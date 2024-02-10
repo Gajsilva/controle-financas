@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Gerenciador Financeiro - Transações</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/estilo.css}" />
 </head>
@@ -21,7 +23,7 @@
 </form>
 
 <!-- Pesquisar por Data -->
-<form th:action="@{/pesquisarPorData}" method="get">
+<form th:action="@{/pesquisarPorData}" method="get" onsubmit="return validarPesquisaPorData()">
     <label for="dataInicio">Data de Início:</label>
     <input type="date" id="dataInicio" name="dataInicio" />
     <label for="dataFim">Data de Fim:</label>
@@ -30,13 +32,14 @@
 </form>
 
 <!-- Filtrar por Valor -->
-<form action="index.html" th:action="@{/filtrarPorValor}" th:object="${transacao}" method="get">
+<form action="index.html" th:action="@{/filtrarPorValor}" th:object="${transacao}" method="get" onsubmit="return validarFiltrarPorValor()">
     <label for="precoMin">Preço Mínimo:</label>
     <input type="number" id="precoMin" name="precoMin" />
     <label for="precoMax">Preço Máximo:</label>
     <input type="number" id="precoMax" name="precoMax" />
     <button type="submit" class="btn btn-geral">Filtrar por Valor</button>
 </form>
+
 
 
 <table class="transacao-table">
@@ -68,7 +71,8 @@
 
 
 
-            <a class="btn btn-excluir btn-exc" th:href="@{'/excluir/' + ${transacao.id}}">Excluir</a>
+            <a class="btn btn-excluir btn-exc" onclick="confirmarExclusao(event)"
+               th:href="@{'/excluir/' + ${transacao.id}}">Excluir</a>
 
 
             <button class="btn btn-excluir btn-cancelar" style="display:none;">Cancelar</button>
@@ -90,6 +94,7 @@
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 
@@ -186,6 +191,81 @@
             return parts[2] + '-' + parts[1] + '-' + parts[0];
         }
     });
+</script>
+<script>
+    function validarPesquisaPorData() {
+        var dataInicio = document.getElementById('dataInicio').value;
+        var dataFim = document.getElementById('dataFim').value;
+
+        if (!dataInicio || !dataFim) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Não Pode Deixar Em Branco !',
+                text: 'Por favor, preencha ambas as datas!',
+            });
+            return false; // Impede o envio do formulário se alguma data estiver vazia
+        }
+
+        return true; // Permite o envio do formulário se ambas as datas estiverem preenchidas
+    }
+</script>
+<script>
+    function validarFiltrarPorValor() {
+        var precoMin = document.getElementById('precoMin').value;
+        var precoMax = document.getElementById('precoMax').value;
+
+        if (!precoMin || !precoMax) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Não Pode Deixar Em Branco !',
+                text: 'Por favor, preencha ambos os campos de preço!',
+            });
+
+            return false; // Impede o envio do formulário se algum campo de preço estiver vazio
+        }
+
+        return true; // Permite o envio do formulário se ambos os campos de preço estiverem preenchidos
+    }
+</script>
+<script>
+    function confirmarExclusao() {
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: 'Esta ação não pode ser desfeita!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se confirmado, redirecione para a URL de exclusão
+                window.location.href = document.querySelector('.btn-excluir').getAttribute('href');
+            }
+        });
+    }
+</script>
+<script>
+    function confirmarExclusao(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: 'Se excluir, ja era !',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, apaga logo!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                window.location.href = document.querySelector('.btn-excluir').getAttribute('href');
+            }
+        });
+    }
 </script>
 
 </body>
