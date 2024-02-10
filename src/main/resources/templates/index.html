@@ -252,7 +252,7 @@
 
         Swal.fire({
             title: 'Você tem certeza?',
-            text: 'Se excluir, ja era !',
+            text: 'Se excluir, ja era!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -261,12 +261,15 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-
-                window.location.href = document.querySelector('.btn-excluir').getAttribute('href');
+                // Verifica se o elemento clicado é um botão de exclusão antes de redirecionar
+                if (event.target.classList.contains('btn-excluir')) {
+                    window.location.href = event.target.getAttribute('href');
+                }
             }
         });
     }
 </script>
+
 
 </body>
 </html>
