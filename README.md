@@ -14,7 +14,8 @@ Este é um projeto de **Gerenciador de Finanças Pessoais** desenvolvido em **Sp
 - Spring Boot
 - Thymeleaf
 - Spring Data JPA
-- (Adicione outras tecnologias utilizadas)
+- Spring Mvc
+- H2 - No modo local
 
 ## Configuração do Ambiente de Desenvolvimento
 
