@@ -81,3 +81,17 @@ form button:hover {
     background-color: #555; /* Cor de fundo ao passar o mouse sobre o link de volta (efeito hover) */
     color: #fff; /* Cor do texto no link de volta ao passar o mouse sobre (efeito hover) */
 }
+form select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #86bb71;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilizando as opções dentro do select */
+form select option {
+    background-color: #fff; /* Cor de fundo das opções */
+    color: #333; /* Cor do texto das opções */
+}

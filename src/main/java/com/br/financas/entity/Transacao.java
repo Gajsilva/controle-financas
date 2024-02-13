@@ -1,9 +1,7 @@
 package com.br.financas.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -24,7 +22,6 @@ public class Transacao {
 
     private String descricao;
 
-
     private String tipo;
 
 
@@ -37,7 +34,7 @@ public class Transacao {
     public void setId(Long id) {
         this.id = id;
     }
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
     public Date getDate() {
         return date;
     }

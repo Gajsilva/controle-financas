@@ -1,6 +1,7 @@
 package com.br.financas.service;
 
 import com.br.financas.entity.Transacao;
+import com.br.financas.enums.TipoTransacao;
 import com.br.financas.repository.TransacaoRepository;
 import com.br.financas.util.TransacaoSpecifications;
 
@@ -23,8 +24,6 @@ public class TransacaoService {
 
     public List<Transacao> getAllTransacao() {
         List<Transacao> transacoes = transacaoRepository.findAll();
-
-
         transacoes = transacoes.stream()
                 .filter(transacao -> transacao.getDate() != null)
                 .collect(Collectors.toList());
@@ -36,6 +35,7 @@ public class TransacaoService {
 
 
     public void addTransacao(Transacao transacao) {
+
         transacaoRepository.save(transacao);
     }
 
@@ -52,8 +52,6 @@ public class TransacaoService {
                 sortByDate
         );
     }
-
-
 
     public List<Transacao> pesquisarPorData(Date dataInicio, Date dataFim) {
         return new ArrayList<>(transacaoRepository.findByDateBetween(dataInicio, dataFim));
@@ -87,7 +85,6 @@ public class TransacaoService {
                 transacao.setCategoria(transacaoAtualizada.getCategoria());
 
             }
-
 
             if (transacaoAtualizada.getDescricao() != null) {
                 transacao.setDescricao(transacaoAtualizada.getDescricao());

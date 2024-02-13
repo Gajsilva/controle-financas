@@ -19,7 +19,14 @@
   <label>Data:<input type="date" th:field="*{date}" /></label><br/>
   <label>Categoria: <input type="text" th:field="*{categoria}" /></label><br/>
   <label>Descrição: <input type="text" th:field="*{descricao}" /></label><br/>
-  <label>Tipo: <input type="text" th:field="*{tipo}" /></label><br/>
+  <label>Tipo:
+    <select th:field="*{tipo}">
+      <option value="Debito">Débito</option>
+      <option value="Dinheiro">Dinheiro</option>
+      <option value="Credito">Crédito</option>
+      <option value="Fiado">Fiado</option>
+    </select>
+  </label><br/>
   <label>Valor: <input type="text" th:field="*{valorTotal}" /></label><br/>
   <button class="submit-button" type="submit">Adicionar</button>
 </form>
